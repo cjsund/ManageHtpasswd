@@ -132,4 +132,4 @@ if __name__ == "__main__":
         else:
             use = Usehtpasswd(htpasswd_file=options.file, name=options.name)
             use.delete()
-    else:
+
