@@ -69,7 +69,7 @@ if __name__ == "__main__":
     from optparse import OptionParser
 
     usage = u'''usage: Manage htpasswd 
-    add use:
+    add user:
         python %prog -n san.zhang -a  #use random password
         python %prog -n san.zhang -a -p q1w2e3
         python %prog -n san.zhang -a -f /data/http/htpasswd
@@ -77,9 +77,9 @@ if __name__ == "__main__":
         python %prog -n san.zhang -c  #use random password
         python %prog -n san.zhang -c -p q1w2e3
         python %prog -n sna.zhang -c -f /data/http/htpasswd
-    delete use:
-        python %prog -n san.zhang
-        python %prog -n sna.zhang -f /data/http/htpasswd
+    delete user:
+        python %prog -n san.zhang -d
+        python %prog -n sna.zhang -d -f /data/http/htpasswd
         '''
 
     parser = OptionParser(usage=usage)
@@ -132,3 +132,4 @@ if __name__ == "__main__":
         else:
             use = Usehtpasswd(htpasswd_file=options.file, name=options.name)
             use.delete()
+    else:
