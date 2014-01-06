@@ -60,10 +60,10 @@ class Usehtpasswd(object):
             except htpasswd.basic.UserNotExists, e:
                 print e
 
-    def delete(self, file_name=HTPASSWD_FILE):
+    def delete(self):
 
-        backupfile(path=os.path.dirname(file_name),
-                   name=os.path.basename(file_name))
+        backupfile(path=os.path.dirname(self.htpasswd_file),
+                   name=os.path.basename(self.htpasswd_file))
         with htpasswd.Basic(self.htpasswd_file) as userdel:
             try:
                 userdel.pop(self.name)
@@ -107,38 +107,26 @@ if __name__ == "__main__":
 
     (ops, args) = parser.parse_args()
 
-    if ops.add is True and ops.delete is False and ops.change is False:
-        if ops.file is None:
-            use = Usehtpasswd(name=ops.name)
-            if ops.password is None:
-                use.add()
-            else:
-                use.add(password=ops.password)
-        else:
-            use = Usehtpasswd(htpasswd_file=ops.file, name=ops.name)
-            if ops.password is None:
-                use.add()
-            else:
-                use.add(password=ops.password)
-    elif ops.add is False and ops.delete is False and ops.change is True:
-        if ops.file is None:
-            use = Usehtpasswd(name=ops.name)
-            if ops.password is None:
-                use.change()
-            else:
-                use.change(new_password=ops.password)
-        else:
-            use = Usehtpasswd(htpasswd_file=ops.file, name=ops.name)
-            if ops.password is None:
-                use.change()
-            else:
-                use.change(new_password=ops.password)
-    elif ops.add is False and ops.delete is True and ops.change is False and ops.password is None:
-        if ops.file is None:
-            use = Usehtpasswd(name=ops.name)
-            use.delete()
-        else:
-            use = Usehtpasswd(htpasswd_file=ops.file, name=ops.name)
-            use.delete(file_name=ops.file)
-    elif ops.add is False and ops.delete is True and ops.change is False and ops.password is not None:
-        print "If you want delete user,don`t need -p"
+    if ops.file is None:
+        use = Usehtpasswd(name=ops.name)
+    else:
+        use = Usehtpasswd(htpasswd_file=ops.file, name=ops.name)
+
+    if ops.add + ops.change + ops.delete >= 2:
+        sys.exit("Check your Option")
+
+    if ops.add is True:
+        arg = "add"
+    elif ops.change is True:
+        arg = "change"
+    elif ops.delete is True:
+        arg = "delete"
+        getattr(use, arg)()
+        sys.exit(0)
+
+    if ops.password is None:
+        getattr(use, arg)()
+    else:
+        getattr(use, arg)(ops.password)
+
+
