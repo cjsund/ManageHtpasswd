@@ -115,11 +115,11 @@ if __name__ == "__main__":
     if ops.add + ops.change + ops.delete >= 2:
         sys.exit("Check your Option")
 
-    if ops.add is True:
+    if ops.add:
         arg = "add"
-    elif ops.change is True:
+    elif ops.change:
         arg = "change"
-    elif ops.delete is True:
+    elif ops.delete:
         arg = "delete"
         getattr(use, arg)()
         sys.exit(0)
@@ -128,5 +128,3 @@ if __name__ == "__main__":
         getattr(use, arg)()
     else:
         getattr(use, arg)(ops.password)
-
-
