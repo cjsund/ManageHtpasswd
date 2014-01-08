@@ -5,6 +5,11 @@ ManageHtpasswd
 		You master install htpasswd from python
 		sudo easy_install htpasswd
 
+    #https://pypi.python.org/pypi/htpasswd
+
+###Requirements
+    2.6 <= Version <= 2.7
+
 ###Function:
 		Manage htpasswd(htpasswd and nginx more)
 		Add user and user`s password or use random password. 
