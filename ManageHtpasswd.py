@@ -99,7 +99,7 @@ class delete(Usehtpasswd, File_name):
         with htpasswd.Basic(self.htpasswd_file) as use:
             try:
                 use.pop(self.user_name)
-                print "Delete user :%s" % self.user_name
+                print "Delete user: %s" % self.user_name
             except htpasswd.basic.UserNotExists, e:
                 print e
 
@@ -145,8 +145,8 @@ if __name__ == "__main__":
 
     if ops.name is None:
         parser.print_help()
+        print "You need -n zhangsan or --name zhangsan"
         sys.exit(1)
-
 
     if ops.add:
         add(user_name=ops.name, htpasswd_file=ops.file, passwd=ops.passwd)
