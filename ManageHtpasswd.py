@@ -143,6 +143,10 @@ if __name__ == "__main__":
         print "Check your option!"
         sys.exit(1)
 
+    if ops.name is None:
+        parser.print_help()
+        sys.exit(1)
+
 
     if ops.add:
         add(user_name=ops.name, htpasswd_file=ops.file, passwd=ops.passwd)
