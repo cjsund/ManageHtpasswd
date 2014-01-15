@@ -18,19 +18,16 @@ FILE = os.path.join(FILE_PATH, FILE_NAME)
 class Usehtpasswd(object):
 
     def __init__(self, user_name, htpasswd_file):
-
         self.user_name = user_name
         self.htpasswd_file = htpasswd_file
 
     def show(self, user_name, passwd):
-
         print "User name: %s Password: %s" % (user_name, passwd)
 
 
-class ranpasswd(object):
+class Ranpasswd(object):
 
     def __init__(self, length=12):
-
         dic = string.digits + string.letters
         self.ranpasswd = "".join(sample(dic, length))
         return self.ranpasswd
@@ -39,28 +36,25 @@ class ranpasswd(object):
 class File_name(object):
 
     def __init__(self, htpasswd_file):
-
-        if htpasswd_file is None:
-            self.htpasswd_file = FILE
+        if htpasswd_file:
+            self.htpasswd_file = htpasswd_file            
         else:
-            self.htpasswd_file = htpasswd_file
+            self.htpasswd_file = FILE
 
 
-class Passwd(ranpasswd):
+class Passwd(Ranpasswd):
 
     def __init__(self, passwd):
-
         if passwd:
             self.passwd = passwd
         else:
-            ranpasswd.__init__(self)
+            Ranpasswd.__init__(self)
             self.passwd = self.ranpasswd
 
 
-class add(Usehtpasswd, Passwd, File_name):
+class Add(Usehtpasswd, Passwd, File_name):
 
     def __init__(self, user_name, htpasswd_file=None, passwd=None):
-
         Usehtpasswd.__init__(self, user_name, htpasswd_file)
         File_name.__init__(self, htpasswd_file)
         Passwd.__init__(self, passwd)
@@ -73,10 +67,9 @@ class add(Usehtpasswd, Passwd, File_name):
                 print e
 
 
-class change(Usehtpasswd, Passwd, File_name):
+class Change(Usehtpasswd, Passwd, File_name):
 
     def __init__(self, user_name, htpasswd_file=None, passwd=None):
-
         Usehtpasswd.__init__(self, user_name, htpasswd_file)
         File_name.__init__(self, htpasswd_file)
         Passwd.__init__(self, passwd)
@@ -89,10 +82,9 @@ class change(Usehtpasswd, Passwd, File_name):
                 print e
 
 
-class delete(Usehtpasswd, File_name):
+class Delete(Usehtpasswd, File_name):
 
     def __init__(self, user_name, htpasswd_file=None):
-
         Usehtpasswd.__init__(self, user_name, htpasswd_file)
         File_name.__init__(self, htpasswd_file)
 
@@ -139,7 +131,8 @@ if __name__ == "__main__":
 
     (ops, args) = parser.parse_args()
 
-    if ops.add + ops.change + ops.delete >= 2:
+    status = ops.add + ops.change + ops.delete
+    if status >= 2:
         print "Check your option!"
         sys.exit(1)
 
@@ -147,12 +140,14 @@ if __name__ == "__main__":
         parser.print_help()
         print "You need -n zhangsan or --name zhangsan"
         sys.exit(1)
+    elif status != 1:
+        print "Do you want to add user or change password or delete user?"
 
     if ops.add:
-        add(user_name=ops.name, htpasswd_file=ops.file, passwd=ops.passwd)
+        Add(user_name=ops.name, htpasswd_file=ops.file, passwd=ops.passwd)
 
     if ops.change:
-        change(user_name=ops.name, htpasswd_file=ops.file, passwd=ops.passwd)
+        Change(user_name=ops.name, htpasswd_file=ops.file, passwd=ops.passwd)
 
     if ops.delete:
-        delete(user_name=ops.name, htpasswd_file=ops.file)
+        Delete(user_name=ops.name, htpasswd_file=ops.file)
